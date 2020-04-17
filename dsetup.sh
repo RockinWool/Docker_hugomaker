@@ -7,12 +7,12 @@ do
         read -p " すでにコンテナは存在しますが作り直しますか? (y/N):" BUILD
         case "$BUILD" in 
             [yY]*) sudo docker rm HugoC \
-            && sudo docker run -itd --name HugoC -v $PWD/RFV:/home/RockinWool/RFV hugoc \
+            && sudo docker run -itd --name HugoC -v $PWD/RFV:/home/RockinWool/RFV -p 8888:8888 --rm --mount type=bind,src=`pwd`,dst=./ hugoc\
             && sudo docker exec -it HugoC bash;;
             *) echo "skipped." ;;
         esac
     else
-        sudo docker run -itd --name HugoC -v $PWD/RFV:/home/RockinWool/RFV hugoc
+        sudo docker run -itd --name HugoC -v $PWD/RFV:/home/RockinWool/RFV -p 8888:8888 --rm --mount type=bind,src=`pwd`,dst=./ hugoc
     fi
     sudo docker start HugoC
     sudo docker exec -it HugoC bash
